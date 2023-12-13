@@ -5,9 +5,19 @@ import type { AppProps } from "next/app";
 import Layout from "../components/Layout";
 
 const theme = createTheme({
-  palette: {
-    mode: "dark",
-  },
+	palette: {
+		mode: "dark",
+	},
+	typography: {
+		button: {
+			fontFamily: "Roboto",
+			fontWeight: 500,
+			fontSize: "24px",
+			lineHeight: "28px",
+			textTransform: "none",
+      color: "white"
+		},
+	},
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
