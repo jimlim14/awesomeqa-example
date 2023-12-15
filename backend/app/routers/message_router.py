@@ -13,3 +13,12 @@ async def get_message(
 ):
   message = ticket_repository.get_message(msgId)
   return JSONResponse(message, status_code=200)
+
+# get conversation from ticket's context_messages using ticket's id
+@router.get("/messages")
+async def get_conversation(
+  ticketId: str, 
+  ticket_repository: TicketRepository = Depends(lambda: TicketRepository(filepath=TICKET_FILEPATH))
+):
+  messages = ticket_repository.get_messages(ticketId)
+  return JSONResponse(messages, status_code=200)
