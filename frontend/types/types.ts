@@ -1,4 +1,4 @@
-export type Ticket = {
+export type TicketType = {
   id: string;
   msg_id: string;
   status: string;
@@ -8,7 +8,7 @@ export type Ticket = {
   context_messages: string[];
 }
 
-export type Message = {
+export type MessageType = {
   id: string;
   channel_id: string;
   parent_channel_id: null | string;

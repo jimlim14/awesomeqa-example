@@ -1,53 +1,31 @@
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
-import { Message, Ticket } from "../../types/types";
+import { useEffect, useState, useRef } from "react";
+import { TicketType } from "../../types/types";
+import styles from "../../styles/Tickets.module.css";
+import Ticket from "../../components/Ticket";
+import fetcher from "../../lib/fetcher";
 
 function Tickets() {
-	const [tickets, setTickets] = useState<Ticket[] | null>(null);
-	const [currentPage, setCurrentPage] = useState(1);
-	const itemsPerPage = 20;
-	const startIndex = (currentPage - 1) * itemsPerPage;
-	const endIndex = startIndex + itemsPerPage;
-	const totalPages = Math.ceil(tickets?.length / itemsPerPage);
-	const currentTickets = tickets.slice(startIndex, endIndex);
+	const [tickets, setTickets] = useState<TicketType[] | null>(null);
 
 	useEffect(() => {
-		fetch(`http://localhost:5001/tickets/?start=${0}1&stop=${219}`)
-			.then((res) => res.json())
-			.then((data) => setTickets(data));
+		fetchTickets();
 	}, []);
 
-	function handlePageChange(operator: string) {
-		if (operator === "-") {
-			setCurrentPage((prev) => Math.max(prev - 1, 1));
-		}
-		if (operator === "+") {
-			setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-		}
+	async function fetchTickets() {
+		const data = await fetcher(
+			`tickets`
+		);
+		setTickets(data);
 	}
 
 	return (
 		<>
-			<Box>
+			<Box className={styles.ticketsContainer}>
 				{tickets &&
-					currentTickets.map((ticket: Ticket) => (
-						<div key={ticket.id}>{ticket.id}</div>
+					tickets.map((ticket: TicketType) => (
+						<Ticket key={ticket.id} ticket={ticket} />
 					))}
-			</Box>
-			<Box>
-				<button
-					onClick={() => handlePageChange("-")}
-					disabled={currentPage === 1}
-				>
-					Previous
-				</button>
-				<span> Page {currentPage} </span>
-				<button
-					onClick={() => handlePageChange("+")}
-					disabled={currentPage === totalPages}
-				>
-					Next
-				</button>
 			</Box>
 		</>
 	);
