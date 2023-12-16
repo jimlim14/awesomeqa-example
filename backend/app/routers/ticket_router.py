@@ -10,11 +10,10 @@ async def get_tickets(ticket_repository: TicketRepository = Depends(lambda: Tick
   tickets = ticket_repository.get_tickets()
   return JSONResponse(tickets, status_code=200)
 
-@router.get("/tickets")
-async def get_ticket(
-  ticketId: str, 
+@router.delete("/tickets")
+async def delete_ticket(
+  ticket_id: str, 
   ticket_repository: TicketRepository = Depends(lambda: TicketRepository(filepath=TICKET_FILEPATH))
 ):
-  print(ticketId)
-  ticket = ticket_repository.get_ticket(ticketId)
-  return JSONResponse(ticket, status_code=200)
+  data = ticket_repository.delete_ticket(ticket_id)
+  return JSONResponse(data, status_code=200)

@@ -4,20 +4,22 @@ from typing import List
 
 class TicketRepository:
     def __init__(self, filepath: str):
+        self.filepath = filepath
         with open(filepath) as json_file:
             self.data = json.load(json_file)
 
     def get_tickets(self, start: Optional[int] = None, stop: Optional[int] = None) -> list[dict]:
         return self.data["tickets"][start:stop]
 
-    def get_ticket(self, ticketId: str) -> dict:
-        ticket = {}
-        tickets = self.get_tickets()
-        for item in tickets:
-            if item['id'] == ticketId:
-                ticket = item
-                break
-        return ticket
+    def delete_ticket(self, ticket_id: str) -> List[dict]:
+        updated_tickets = [ticket for ticket in self.data["tickets"] if ticket["id"] != ticket_id]
+        self.data["tickets"] = updated_tickets
+        self._save_changes()
+        return self.data["tickets"]
+
+    def _save_changes(self):
+        with open(self.filepath, 'w') as json_file:
+            json.dump(self.data, json_file, indent=2)
 
     def get_message(self, msgId: str) -> dict:
         message = {}
