@@ -8,5 +8,10 @@
 	padding: 10px;
 	border-radius: 8px;
 	border: 1px solid #302f36;
-	background-color: #1c1c1f;
+	cursor: pointer;
+	transition: 0.22s;
+}
+
+.ticket:hover {
+	background-color: #0A0A0A;
 }

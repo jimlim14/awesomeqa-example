@@ -5,11 +5,16 @@ import { useEffect, useState } from "react";
 import fetcher from "../../lib/fetcher";
 import Drawer from "@mui/material/Drawer";
 import TurnRightIcon from "@mui/icons-material/TurnRight";
+import SearchIcon from "@mui/icons-material/Search";
+import MessageIcon from "@mui/icons-material/Message";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import { formatDateDistance } from "../../lib/formatDateDistance";
 
 type Props = {
 	ticket: TicketType;
 	handleSearchClick: (msgId: string) => void;
 	handleSearchMessageChange: (searchMessage: string) => void;
+	setTickets: React.Dispatch<React.SetStateAction<TicketType[]>>;
 };
 
 const Ticket: React.FC<Props> = (props) => {
@@ -47,7 +52,15 @@ const Ticket: React.FC<Props> = (props) => {
 			return (
 				<Box sx={{ display: "flex", alignItems: "center" }}>
 					<TurnRightIcon sx={{ m: "0 25px 0 17px", color: "#808389" }} />
-					<Box sx={{ display: "flex", alignItems: "center" }}>
+					<Box
+						sx={{
+							display: "flex",
+							alignItems: "center",
+							overflow: "hidden",
+							textOverflow: "ellipsis",
+							whiteSpace: "nowrap",
+						}}
+					>
 						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img
 							src={repliedMessage.author.avatar_url}
@@ -66,28 +79,93 @@ const Ticket: React.FC<Props> = (props) => {
 	}
 
 	return (
-		<Box className={styles.ticket} onClick={handleDrawerOpen}>
+		<Box
+			className={styles.ticket}
+			onClick={handleDrawerOpen}
+			sx={{
+				bgcolor: toggleDrawer ? "#0A0A0A" : "#1c1c1f",
+			}}
+		>
 			{message && (
-				<Box sx={{ display: "flex" }}>
-					<Typography color={message.author.color}>
-						{message.author.name}
-					</Typography>
-					<Typography>: {message.content}</Typography>
-					<button
-						onClick={(e) => {
-							e.stopPropagation();
-							props.handleSearchClick(props.ticket.msg_id);
-							props.handleSearchMessageChange(message.content);
+				<Box
+					height="100%"
+					sx={{
+						display: "flex",
+						flexDirection: "column",
+						justifyContent: "space-between",
+					}}
+				>
+					<Box sx={{ display: "flex" }}>
+						<Typography color={message.author.color}>
+							{message.author.name}
+						</Typography>
+						<Typography>: {message.content}</Typography>
+					</Box>
+					<Box
+						sx={{
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "flex-end",
+							mt: "16px"
 						}}
 					>
-						search
-					</button>
+						<Box sx={{ display: "flex", alignItems: "center" }}>
+							<SearchIcon
+								onClick={(e) => {
+									e.stopPropagation();
+									props.handleSearchClick(props.ticket.msg_id);
+									props.handleSearchMessageChange(message.content);
+								}}
+								sx={{
+									borderRadius: "8px",
+									cursor: "pointer",
+									mr: "10px",
+									"&:hover": {
+										border: "0.5px solid #808389",
+									},
+								}}
+							/>
+							<MessageIcon sx={{ color: "#dfdfe2", mr: "5px" }} />
+							<Typography color="#dfdfe2" sx={{ mr: "10px" }}>
+								{props.ticket.context_messages.length}
+							</Typography>
+							<Typography
+								sx={{
+									border: "1px solid grey",
+									borderRadius: "10px",
+									padding: "4px 8px",
+									fontSize: "12px",
+								}}
+								color="#808389"
+							>
+								{formatDateDistance(message.timestamp)}
+							</Typography>
+						</Box>
+						<DeleteOutlineRoundedIcon
+							onClick={async (e) => {
+								e.stopPropagation();
+								const data = await fetcher(
+									`tickets?ticket_id=${props.ticket.id}`,
+									undefined,
+									"DELETE"
+								);
+								props.setTickets(data);
+							}}
+							sx={{
+								borderRadius: "8px",
+								"&:hover": {
+									border: "0.5px solid #808389",
+								},
+							}}
+						/>
+					</Box>
 				</Box>
 			)}
 			<Drawer
 				anchor="right"
 				open={toggleDrawer}
 				onClose={() => setToggleDrawer(false)}
+				hideBackdrop
 			>
 				<Box sx={{ width: "550px", p: "20px" }}>
 					{contextMessages &&

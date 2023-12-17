@@ -46,6 +46,7 @@ function Tickets() {
 								<Ticket
 									key={ticket.id}
 									ticket={ticket}
+									setTickets={setTickets}
 									handleSearchMessageChange={(searchMessage: string) =>
 										setSearchMessage(searchMessage)
 									}
