@@ -9,6 +9,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import MessageIcon from "@mui/icons-material/Message";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import { formatDateDistance } from "../../lib/formatDateDistance";
+import LinkIcon from "@mui/icons-material/Link";
 
 type Props = {
 	ticket: TicketType;
@@ -165,13 +166,27 @@ const Ticket: React.FC<Props> = (props) => {
 					onClose={() => setToggleDrawer(false)}
 					hideBackdrop
 				>
-					<Box sx={{ width: "550px", p: "20px" }}>
+					<Box sx={{ width: "550px", p: "20px 0" }}>
 						{contextMessages &&
 							contextMessages.map((message: MessageType) => (
-								<>
+								<Box
+									key={message.id}
+									sx={{
+										bgcolor:
+											props.ticket.msg_id === message.id
+												? "rgba(219, 168, 50, 0.2)"
+												: "",
+									}}
+								>
 									{message.reference_msg_id &&
 										getRepliedMessage(message.reference_msg_id)}
-									<Box key={message.id} sx={{ display: "flex", mb: "20px" }}>
+									<Box
+										sx={{
+											display: "flex",
+											mb: "20px",
+											p: "0 20px",
+										}}
+									>
 										{/* eslint-disable-next-line @next/next/no-img-element */}
 										<img
 											src={message.author.avatar_url}
@@ -180,24 +195,39 @@ const Ticket: React.FC<Props> = (props) => {
 											height={50}
 											style={{ borderRadius: "50%", marginRight: "16px" }}
 										/>
-										<Box sx={{ display: "flex", flexDirection: "column" }}>
-											<Box sx={{ display: "flex", alignItems: "center" }}>
-												<Typography
-													color={message.author.color}
-													sx={{ mr: "8px" }}
-												>
-													{message.author.name}
-												</Typography>
-												<Typography color="#808389" sx={{ fontSize: "12px" }}>
-													{message.timestamp}
-												</Typography>
+										<Box
+											width="100%"
+											sx={{ display: "flex", flexDirection: "column" }}
+										>
+											<Box
+												sx={{
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "space-between",
+												}}
+											>
+												<Box sx={{ display: "flex" }}>
+													<Typography
+														color={message.author.color}
+														sx={{ mr: "8px" }}
+													>
+														{message.author.name}
+													</Typography>
+													<Typography color="#808389" sx={{ fontSize: "12px" }}>
+														{message.timestamp}
+													</Typography>
+												</Box>
+												{props.ticket.msg_id === message.id && (
+													<a href={message.msg_url}>
+														<LinkIcon fontSize="small" onClick={() => {}} />
+													</a>
+												)}
 											</Box>
 											{message.content}
 										</Box>
 									</Box>
-								</>
+								</Box>
 							))}
-						{/* <a href={message.msg_url}>Go to discord</a> */}
 					</Box>
 				</Drawer>
 			</Box>
