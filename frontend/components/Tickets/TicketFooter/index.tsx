@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Tooltip } from "@mui/material";
 import ticketFooterStyles from "./TicketFooter.module.css";
 import ticketsPageStyles from "../../../styles/Tickets.module.css";
 import SearchIcon from "@mui/icons-material/Search";
@@ -17,7 +17,6 @@ type Props = {
 };
 
 const TicketFooter: React.FC<Props> = (props) => {
-  
 	function handleSearch(e: React.MouseEvent<SVGSVGElement>) {
 		e.stopPropagation();
 		props.handleSearchClick(props.ticket.msg_id);
@@ -37,11 +36,16 @@ const TicketFooter: React.FC<Props> = (props) => {
 	return (
 		<Box className={ticketsPageStyles.ticketFooter}>
 			<Box sx={{ display: "flex", alignItems: "center" }}>
-				<SearchIcon
-					onClick={handleSearch}
-					sx={{ mr: "10px" }}
-					className={ticketsPageStyles.actionIcon}
-				/>
+				<Tooltip
+					title="click to search this question that might appear in other context"
+					placement="top"
+				>
+					<SearchIcon
+						onClick={handleSearch}
+						sx={{ mr: "10px" }}
+						className={ticketsPageStyles.actionIcon}
+					/>
+				</Tooltip>
 				<MessageIcon sx={{ color: "#dfdfe2", mr: "5px" }} />
 				<Typography color="#dfdfe2" sx={{ mr: "10px" }}>
 					{props.ticket.context_messages.length}
@@ -50,10 +54,12 @@ const TicketFooter: React.FC<Props> = (props) => {
 					{formatDateDistance(props.message.timestamp)}
 				</Typography>
 			</Box>
-			<DeleteOutlineRoundedIcon
-				onClick={handleTicketDelete}
-				className={ticketsPageStyles.actionIcon}
-			/>
+			<Tooltip title="delete ticket" placement="top">
+				<DeleteOutlineRoundedIcon
+					onClick={handleTicketDelete}
+					className={ticketsPageStyles.actionIcon}
+				/>
+			</Tooltip>
 		</Box>
 	);
 };

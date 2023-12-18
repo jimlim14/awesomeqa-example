@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Tooltip } from "@mui/material";
 import { MessageType, TicketType } from "../../../types/types";
 import TurnRightIcon from "@mui/icons-material/TurnRight";
 import LinkIcon from "@mui/icons-material/Link";
@@ -92,12 +92,14 @@ const ContextMessage: React.FC<Props> = (props) => {
 							</Typography>
 						</Box>
 						{props.ticket.msg_id === props.message.id && (
-							<a href={props.message.msg_url} style={{ border: "none" }}>
-								<LinkIcon
-									fontSize="small"
-									className={ticketsPageStyles.actionIcon}
-								/>
-							</a>
+							<Tooltip title="go to discord" placement="top-start">
+								<a href={props.message.msg_url} style={{ border: "none" }}>
+									<LinkIcon
+										fontSize="small"
+										className={ticketsPageStyles.actionIcon}
+									/>
+								</a>
+							</Tooltip>
 						)}
 					</Box>
 					<Typography>{props.message.content}</Typography>
