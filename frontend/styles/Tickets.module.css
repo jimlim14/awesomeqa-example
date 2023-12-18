@@ -7,5 +7,13 @@
 }
 
 .ticket:hover {
-	background-color: #0A0A0A;
+	background-color: #0a0a0a;
+}
+
+.actionIcon {
+	border-radius: 8px;
+}
+
+.actionIcon:hover {
+	border: 0.5px solid #808389;
 }

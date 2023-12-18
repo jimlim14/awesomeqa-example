@@ -118,14 +118,8 @@ const Ticket: React.FC<Props> = (props) => {
 										props.handleSearchClick(props.ticket.msg_id);
 										props.handleSearchMessageChange(message.content);
 									}}
-									sx={{
-										borderRadius: "8px",
-										cursor: "pointer",
-										mr: "10px",
-										"&:hover": {
-											border: "0.5px solid #808389",
-										},
-									}}
+									sx={{ mr: "10px" }}
+									className={styles.actionIcon}
 								/>
 								<MessageIcon sx={{ color: "#dfdfe2", mr: "5px" }} />
 								<Typography color="#dfdfe2" sx={{ mr: "10px" }}>
@@ -153,12 +147,7 @@ const Ticket: React.FC<Props> = (props) => {
 									);
 									props.setTickets(data);
 								}}
-								sx={{
-									borderRadius: "8px",
-									"&:hover": {
-										border: "0.5px solid #808389",
-									},
-								}}
+								className={styles.actionIcon}
 							/>
 						</Box>
 					</>
@@ -221,8 +210,11 @@ const Ticket: React.FC<Props> = (props) => {
 													</Typography>
 												</Box>
 												{props.ticket.msg_id === message.id && (
-													<a href={message.msg_url}>
-														<LinkIcon fontSize="small" onClick={() => {}} />
+													<a href={message.msg_url} style={{ border: "none" }}>
+														<LinkIcon
+															fontSize="small"
+															className={styles.actionIcon}
+														/>
 													</a>
 												)}
 											</Box>
