@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Skeleton, Grid, Typography } from "@mui/material";
 import styles from "../../styles/Tickets.module.css";
 import { MessageType, TicketType } from "../../types/types";
 import { useEffect, useState } from "react";
@@ -73,15 +73,23 @@ const Ticket: React.FC<Props> = (props) => {
 					hideBackdrop
 				>
 					<Box className={styles.drawerContainer}>
-						{contextMessages &&
-							contextMessages.map((message: MessageType) => (
-								<ContextMessage
-									key={message.id}
-									ticket={props.ticket}
-									message={message}
-									contextMessages={contextMessages}
-								/>
-							))}
+						{contextMessages
+							? contextMessages.map((message: MessageType) => (
+									<ContextMessage
+										key={message.id}
+										ticket={props.ticket}
+										message={message}
+										contextMessages={contextMessages}
+									/>
+							  ))
+							: [...Array(10)].map((_, i) => (
+									<Skeleton
+										variant="rectangular"
+										key={i}
+										height={60}
+										sx={{ mb: "16px" }}
+									/>
+							  ))}
 					</Box>
 				</Drawer>
 			</Box>
