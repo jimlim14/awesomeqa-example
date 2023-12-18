@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import { TicketType } from "../../types/types";
 import styles from "../../styles/Tickets.module.css";
@@ -35,7 +35,7 @@ function Tickets() {
 					<p>search question: {searchMessage}</p>
 				</>
 			)}
-			<Box className={styles.ticketsContainer}>
+			<Grid container spacing={2}>
 				{tickets &&
 					tickets.map((ticket: TicketType) => {
 						if (
@@ -58,7 +58,7 @@ function Tickets() {
 							);
 						}
 					})}
-			</Box>
+			</Grid>
 		</>
 	);
 }
