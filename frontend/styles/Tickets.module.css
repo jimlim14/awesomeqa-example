@@ -32,3 +32,10 @@
 	width: 500px;
 	padding: 20px 0;
 }
+
+.searchQuestion {
+	border: 2px solid rgb(65, 20, 200);
+	border-radius: 14px;
+	padding: 4px 8px;
+	font-size: 12px;
+}

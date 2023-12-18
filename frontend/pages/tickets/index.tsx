@@ -1,9 +1,10 @@
-import { Grid } from "@mui/material";
+import { Grid, Box, Typography, Tooltip } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import { TicketType } from "../../types/types";
 import styles from "../../styles/Tickets.module.css";
 import Ticket from "../../components/Tickets";
 import fetcher from "../../lib/fetcher";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 function Tickets() {
 	const [tickets, setTickets] = useState<TicketType[] | null>(null);
@@ -24,15 +25,22 @@ function Tickets() {
 		<>
 			{isSearchSelected && (
 				<>
-					<button
-						onClick={() => {
-							setIsSearchSelected(false);
-							setSearchMessage("");
-						}}
-					>
-						cancel search
-					</button>
-					<p>search question: {searchMessage}</p>
+					<Tooltip title="clear search" placement="top">
+						<RestartAltIcon
+							fontSize="large"
+							onClick={() => {
+								setIsSearchSelected(false);
+								setSearchMessage("");
+							}}
+							style={{ margin: "16px 0", cursor: "pointer" }}
+						/>
+					</Tooltip>
+					<Box sx={{ display: "flex", alignItems: "center", mb: "16px" }}>
+						<Typography>Search question: </Typography>
+						<Typography className={styles.searchQuestion} width="fit-content">
+							{searchMessage}
+						</Typography>
+					</Box>
 				</>
 			)}
 			<Grid container spacing={2}>
