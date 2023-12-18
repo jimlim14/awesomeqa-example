@@ -1,4 +1,7 @@
-.ticket {
+.ticketContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	padding: 10px;
 	border-radius: 8px;
 	border: 1px solid #302f36;
@@ -6,8 +9,15 @@
 	transition: 0.22s;
 }
 
-.ticket:hover {
+.ticketContainer:hover {
 	background-color: #0a0a0a;
+}
+
+.ticketFooter {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	margin-top: 16px;
 }
 
 .actionIcon {

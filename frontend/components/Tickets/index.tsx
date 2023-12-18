@@ -5,11 +5,8 @@ import { useEffect, useState } from "react";
 import fetcher from "../../lib/fetcher";
 import Drawer from "@mui/material/Drawer";
 import TurnRightIcon from "@mui/icons-material/TurnRight";
-import SearchIcon from "@mui/icons-material/Search";
-import MessageIcon from "@mui/icons-material/Message";
-import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
-import { formatDateDistance } from "../../lib/formatDateDistance";
 import LinkIcon from "@mui/icons-material/Link";
+import TicketFooter from "./TicketFooter";
 
 type Props = {
 	ticket: TicketType;
@@ -83,17 +80,12 @@ const Ticket: React.FC<Props> = (props) => {
 	}
 
 	return (
-		<Grid item md={6}>
+		<Grid item md={6} xs={12}>
 			<Box
 				height="100%"
 				onClick={handleDrawerOpen}
-				className={styles.ticket}
-				sx={{
-					bgcolor: toggleDrawer ? "#0A0A0A" : "#1c1c1f",
-					display: "flex",
-					flexDirection: "column",
-					justifyContent: "space-between",
-				}}
+				className={styles.ticketContainer}
+				sx={{ bgcolor: toggleDrawer ? "#0A0A0A" : "#1c1c1f" }}
 			>
 				{message && (
 					<>
@@ -103,53 +95,13 @@ const Ticket: React.FC<Props> = (props) => {
 							</Typography>
 							<Typography>: {message.content}</Typography>
 						</Box>
-						<Box
-							sx={{
-								display: "flex",
-								justifyContent: "space-between",
-								alignItems: "flex-end",
-								mt: "16px",
-							}}
-						>
-							<Box sx={{ display: "flex", alignItems: "center" }}>
-								<SearchIcon
-									onClick={(e) => {
-										e.stopPropagation();
-										props.handleSearchClick(props.ticket.msg_id);
-										props.handleSearchMessageChange(message.content);
-									}}
-									sx={{ mr: "10px" }}
-									className={styles.actionIcon}
-								/>
-								<MessageIcon sx={{ color: "#dfdfe2", mr: "5px" }} />
-								<Typography color="#dfdfe2" sx={{ mr: "10px" }}>
-									{props.ticket.context_messages.length}
-								</Typography>
-								<Typography
-									sx={{
-										border: "1px solid grey",
-										borderRadius: "10px",
-										padding: "4px 8px",
-										fontSize: "12px",
-									}}
-									color="#808389"
-								>
-									{formatDateDistance(message.timestamp)}
-								</Typography>
-							</Box>
-							<DeleteOutlineRoundedIcon
-								onClick={async (e) => {
-									e.stopPropagation();
-									const data = await fetcher(
-										`tickets?ticket_id=${props.ticket.id}`,
-										undefined,
-										"DELETE"
-									);
-									props.setTickets(data);
-								}}
-								className={styles.actionIcon}
-							/>
-						</Box>
+						<TicketFooter
+							ticket={props.ticket}
+							message={message}
+							setTickets={props.setTickets}
+							handleSearchClick={props.handleSearchClick}
+							handleSearchMessageChange={props.handleSearchMessageChange}
+						/>
 					</>
 				)}
 				<Drawer
@@ -158,7 +110,7 @@ const Ticket: React.FC<Props> = (props) => {
 					onClose={() => setToggleDrawer(false)}
 					hideBackdrop
 				>
-					<Box sx={{ width: "550px", p: "20px 0" }}>
+					<Box sx={{ width: "500px", p: "20px 0" }}>
 						{contextMessages &&
 							contextMessages.map((message: MessageType) => (
 								<Box

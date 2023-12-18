@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import { TicketType } from "../../types/types";
 import styles from "../../styles/Tickets.module.css";
-import Ticket from "../../components/Ticket";
+import Ticket from "../../components/Tickets";
 import fetcher from "../../lib/fetcher";
 
 function Tickets() {
