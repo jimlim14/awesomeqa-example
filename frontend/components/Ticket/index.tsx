@@ -52,7 +52,7 @@ const Ticket: React.FC<Props> = (props) => {
 		if (repliedMessage) {
 			return (
 				<Box sx={{ display: "flex", alignItems: "center" }}>
-					<TurnRightIcon sx={{ m: "0 25px 0 17px", color: "#808389" }} />
+					<TurnRightIcon sx={{ m: "0 25px 0 37px", color: "#808389" }} />
 					<Box
 						sx={{
 							display: "flex",
@@ -70,8 +70,11 @@ const Ticket: React.FC<Props> = (props) => {
 							height={20}
 							style={{ borderRadius: "50%", marginRight: "6px" }}
 						/>
+						<Typography color={message.author.color}>
+							{repliedMessage.author.name}
+						</Typography>
 						<Typography noWrap color="#dfdfe2" sx={{ fontSize: "12px" }}>
-							{repliedMessage.content}
+							: {repliedMessage.content}
 						</Typography>
 					</Box>
 				</Box>
