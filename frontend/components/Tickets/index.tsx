@@ -49,7 +49,7 @@ const Ticket: React.FC<Props> = (props) => {
 
 	const fetchMessage = async () => {
 		const { data, error } = await fetcher(
-			`message?msgId=${props.ticket.msg_id}`
+			`message?msg_id=${props.ticket.msg_id}`
 		);
 		if (error) {
 			setTicketErrorMessage(`${error}, click to try again`);
@@ -62,7 +62,7 @@ const Ticket: React.FC<Props> = (props) => {
 
 	const fetchConversation = async () => {
 		const { data, error } = await fetcher(
-			`messages?ticketId=${props.ticket.id}`
+			`messages?ticket_id=${props.ticket.id}`
 		);
 		if (error) {
 			setContextMessageError("failed to get conversation");
