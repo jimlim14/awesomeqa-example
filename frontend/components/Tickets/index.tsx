@@ -87,10 +87,10 @@ const Ticket: React.FC<Props> = (props) => {
 					message && (
 						<>
 							<Box sx={{ display: "flex" }}>
-								<Typography color={message.author.color}>
+								<Typography color={message.author.color} variant="body1">
 									{message.author.name}
 								</Typography>
-								<Typography>: {message.content}</Typography>
+								<Typography variant="body1">: {message.content}</Typography>
 							</Box>
 							<TicketFooter
 								ticket={props.ticket}

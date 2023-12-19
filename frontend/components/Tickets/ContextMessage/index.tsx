@@ -37,10 +37,10 @@ const ContextMessage: React.FC<Props> = (props) => {
 							height={20}
 							style={{ borderRadius: "50%", marginRight: "6px" }}
 						/>
-						<Typography color={props.message.author.color}>
+						<Typography color={props.message.author.color} variant="body2">
 							{repliedMessage.author.name}
 						</Typography>
-						<Typography noWrap color="#dfdfe2" sx={{ fontSize: "12px" }}>
+						<Typography noWrap color="#dfdfe2" variant="body2">
 							: {repliedMessage.content}
 						</Typography>
 					</Box>
@@ -83,11 +83,11 @@ const ContextMessage: React.FC<Props> = (props) => {
 							justifyContent: "space-between",
 						}}
 					>
-						<Box sx={{ display: "flex" }}>
-							<Typography color={props.message.author.color} sx={{ mr: "8px" }}>
+						<Box sx={{ display: "flex", alignItems: "center" }}>
+							<Typography color={props.message.author.color} sx={{ mr: "8px" }} variant="body1">
 								{props.message.author.name}
 							</Typography>
-							<Typography color="#808389" sx={{ fontSize: "12px" }}>
+							<Typography color="#808389" variant="body2">
 								{props.message.timestamp}
 							</Typography>
 						</Box>
@@ -102,7 +102,7 @@ const ContextMessage: React.FC<Props> = (props) => {
 							</Tooltip>
 						)}
 					</Box>
-					<Typography>{props.message.content}</Typography>
+					<Typography variant="body1">{props.message.content}</Typography>
 				</Box>
 			</Box>
 		</Box>

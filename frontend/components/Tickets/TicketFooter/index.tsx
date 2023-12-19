@@ -56,10 +56,14 @@ const TicketFooter: React.FC<Props> = (props) => {
 					/>
 				</Tooltip>
 				<MessageIcon sx={{ color: "#dfdfe2", mr: "5px" }} />
-				<Typography color="#dfdfe2" sx={{ mr: "10px" }}>
+				<Typography color="#dfdfe2" sx={{ mr: "10px" }} variant="body1">
 					{props.ticket.context_messages.length}
 				</Typography>
-				<Typography className={ticketFooterStyles.timestamp} color="#808389">
+				<Typography
+					className={ticketFooterStyles.timestamp}
+					color="#808389"
+					variant="body2"
+				>
 					{formatDateDistance(props.message.timestamp)}
 				</Typography>
 			</Box>

@@ -9,13 +9,34 @@ const theme = createTheme({
 		mode: "dark",
 	},
 	typography: {
+		h2: {
+			fontFamily: "Inter",
+			fontWeight: 500,
+			fontSize: "24px",
+			lineHeight: "32px",
+			letterSpacing: "0px",
+		},
+		body1: {
+			fontFamily: "Inter",
+			fontWeight: 500,
+			fontSize: "14px",
+			lineHeight: "20px",
+			letterSpacing: "0.2px",
+		},
+		body2: {
+			fontFamily: "Inter",
+			fontWeight: 500,
+			fontSize: "12px",
+			lineHeight: "16px",
+			letterSpacing: "0.2px",
+		},
 		button: {
 			fontFamily: "Roboto",
 			fontWeight: 500,
 			fontSize: "24px",
 			lineHeight: "28px",
 			textTransform: "none",
-      color: "white"
+			color: "white",
 		},
 	},
 });
