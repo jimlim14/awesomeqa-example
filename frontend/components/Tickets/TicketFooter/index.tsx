@@ -1,4 +1,4 @@
-import { Box, Typography, Tooltip, Alert } from "@mui/material";
+import { Box, Typography, Tooltip, Alert, useTheme } from "@mui/material";
 import ticketFooterStyles from "./TicketFooter.module.css";
 import ticketsPageStyles from "../../../styles/Tickets.module.css";
 import SearchIcon from "@mui/icons-material/Search";
@@ -18,6 +18,7 @@ type Props = {
 };
 
 const TicketFooter: React.FC<Props> = (props) => {
+	const theme = useTheme();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	function handleSearch(e: React.MouseEvent<SVGSVGElement>) {
@@ -55,13 +56,17 @@ const TicketFooter: React.FC<Props> = (props) => {
 						className={ticketsPageStyles.actionIcon}
 					/>
 				</Tooltip>
-				<MessageIcon sx={{ color: "#dfdfe2", mr: "5px" }} />
-				<Typography color="#dfdfe2" sx={{ mr: "10px" }} variant="body1">
+				<MessageIcon sx={{ color: theme.palette.grey[300], mr: "5px" }} />
+				<Typography
+					color={theme.palette.grey[300]}
+					sx={{ mr: "10px" }}
+					variant="body1"
+				>
 					{props.ticket.context_messages.length}
 				</Typography>
 				<Typography
 					className={ticketFooterStyles.timestamp}
-					color="#808389"
+					color={theme.palette.grey[500]}
 					variant="body2"
 				>
 					{formatDateDistance(props.message.timestamp)}

@@ -1,4 +1,4 @@
-import { Box, Typography, Tooltip } from "@mui/material";
+import { Box, Typography, Tooltip, useTheme } from "@mui/material";
 import { MessageType, TicketType } from "../../../types/types";
 import TurnRightIcon from "@mui/icons-material/TurnRight";
 import LinkIcon from "@mui/icons-material/Link";
@@ -12,6 +12,8 @@ type Props = {
 };
 
 const ContextMessage: React.FC<Props> = (props) => {
+	const theme = useTheme();
+
 	function getRepliedMessage(referenceId: string) {
 		const repliedMessage = props.contextMessages.find(
 			(message) => message.id === referenceId
@@ -19,7 +21,9 @@ const ContextMessage: React.FC<Props> = (props) => {
 		if (repliedMessage) {
 			return (
 				<Box sx={{ display: "flex", alignItems: "center" }}>
-					<TurnRightIcon sx={{ m: "0 25px 0 37px", color: "#808389" }} />
+					<TurnRightIcon
+						sx={{ m: "0 25px 0 37px", color: theme.palette.grey[500] }}
+					/>
 					<Box
 						sx={{
 							display: "flex",
@@ -40,7 +44,7 @@ const ContextMessage: React.FC<Props> = (props) => {
 						<Typography color={props.message.author.color} variant="body2">
 							{repliedMessage.author.name}
 						</Typography>
-						<Typography noWrap color="#dfdfe2" variant="body2">
+						<Typography noWrap color={theme.palette.grey[300]} variant="body2">
 							: {repliedMessage.content}
 						</Typography>
 					</Box>
@@ -84,10 +88,14 @@ const ContextMessage: React.FC<Props> = (props) => {
 						}}
 					>
 						<Box sx={{ display: "flex", alignItems: "center" }}>
-							<Typography color={props.message.author.color} sx={{ mr: "8px" }} variant="body1">
+							<Typography
+								color={props.message.author.color}
+								sx={{ mr: "8px" }}
+								variant="body1"
+							>
 								{props.message.author.name}
 							</Typography>
-							<Typography color="#808389" variant="body2">
+							<Typography color={theme.palette.grey[500]} variant="body2">
 								{props.message.timestamp}
 							</Typography>
 						</Box>
