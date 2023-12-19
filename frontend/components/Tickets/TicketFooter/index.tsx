@@ -1,4 +1,4 @@
-import { Box, Typography, Tooltip } from "@mui/material";
+import { Box, Typography, Tooltip, Alert } from "@mui/material";
 import ticketFooterStyles from "./TicketFooter.module.css";
 import ticketsPageStyles from "../../../styles/Tickets.module.css";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,6 +7,7 @@ import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import { formatDateDistance } from "../../../lib/formatDateDistance";
 import fetcher from "../../../lib/fetcher";
 import { TicketType, MessageType } from "../../../types/types";
+import { useState } from "react";
 
 type Props = {
 	ticket: TicketType;
@@ -17,6 +18,8 @@ type Props = {
 };
 
 const TicketFooter: React.FC<Props> = (props) => {
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 	function handleSearch(e: React.MouseEvent<SVGSVGElement>) {
 		e.stopPropagation();
 		props.handleSearchClick(props.ticket.msg_id);
@@ -25,12 +28,18 @@ const TicketFooter: React.FC<Props> = (props) => {
 
 	async function handleTicketDelete(e: React.MouseEvent<SVGSVGElement>) {
 		e.stopPropagation();
-		const data = await fetcher(
+		const { data, error } = await fetcher(
 			`tickets?ticket_id=${props.ticket.id}`,
 			undefined,
 			"DELETE"
 		);
-		props.setTickets(data);
+		if (error) {
+			setErrorMessage("failed to delete ticket.");
+		}
+		if (data) {
+			props.setTickets(data);
+			setErrorMessage(null);
+		}
 	}
 
 	return (
@@ -54,12 +63,22 @@ const TicketFooter: React.FC<Props> = (props) => {
 					{formatDateDistance(props.message.timestamp)}
 				</Typography>
 			</Box>
-			<Tooltip title="delete ticket" placement="top">
-				<DeleteOutlineRoundedIcon
-					onClick={handleTicketDelete}
-					className={ticketsPageStyles.actionIcon}
-				/>
-			</Tooltip>
+			<Box sx={{ display: "flex", alignItems: "center" }}>
+				{errorMessage && (
+					<Alert
+						severity="error"
+						sx={{ height: "30px", display: "flex", alignItems: "center" }}
+					>
+						{errorMessage}
+					</Alert>
+				)}
+				<Tooltip title="delete ticket" placement="top">
+					<DeleteOutlineRoundedIcon
+						onClick={handleTicketDelete}
+						className={ticketsPageStyles.actionIcon}
+					/>
+				</Tooltip>
+			</Box>
 		</Box>
 	);
 };

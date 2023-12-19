@@ -1,4 +1,11 @@
-import { Grid, Box, Typography, Tooltip } from "@mui/material";
+import {
+	Grid,
+	Box,
+	Typography,
+	Tooltip,
+	Alert,
+	AlertTitle,
+} from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import { TicketType } from "../../types/types";
 import styles from "../../styles/Tickets.module.css";
@@ -11,14 +18,31 @@ function Tickets() {
 	const [searchMsgId, setSearchMsgId] = useState("");
 	const [isSearchSelected, setIsSearchSelected] = useState<boolean>(false);
 	const [searchMessage, setSearchMessage] = useState("");
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	useEffect(() => {
 		fetchTickets();
 	}, []);
 
 	async function fetchTickets() {
-		const data = await fetcher(`tickets`);
-		setTickets(data);
+		const { data, error } = await fetcher(`tickets`);
+		if (error) {
+			setErrorMessage("failed to fetch tickets");
+			return;
+		}
+		if (data) {
+			setTickets(data);
+			setErrorMessage(null);
+		}
+	}
+
+	if (errorMessage) {
+		return (
+			<Alert severity="error">
+				<AlertTitle>Error</AlertTitle>
+				{errorMessage} - <strong>refresh the page to try again</strong>
+			</Alert>
+		);
 	}
 
 	return (

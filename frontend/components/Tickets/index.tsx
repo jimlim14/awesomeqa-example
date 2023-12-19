@@ -1,4 +1,11 @@
-import { Box, Skeleton, Grid, Typography } from "@mui/material";
+import {
+	Box,
+	Skeleton,
+	Grid,
+	Typography,
+	Alert,
+	AlertTitle,
+} from "@mui/material";
 import styles from "../../styles/Tickets.module.css";
 import { MessageType, TicketType } from "../../types/types";
 import { useEffect, useState } from "react";
@@ -20,51 +27,80 @@ const Ticket: React.FC<Props> = (props) => {
 	const [contextMessages, setContextMessages] = useState<MessageType[] | null>(
 		null
 	);
+	const [ticketErrorMessage, setTicketErrorMessage] = useState<string | null>(
+		null
+	);
+	const [contextMessageError, setContextMessageError] = useState<string | null>(
+		null
+	);
 
 	useEffect(() => {
-		const fetchMessage = async () => {
-			const data = await fetcher(`message?msgId=${props.ticket.msg_id}`);
-			setMessage(data);
-		};
-
 		fetchMessage();
 	}, []);
 
 	async function handleDrawerOpen(e: React.KeyboardEvent | React.MouseEvent) {
 		if (!toggleDrawer) {
 			setToggleDrawer(true);
-
-			const data = await fetcher(`messages?ticketId=${props.ticket.id}`);
-			setContextMessages(data);
+			fetchConversation();
 		} else {
 			setToggleDrawer(false);
 		}
 	}
 
+	const fetchMessage = async () => {
+		const { data, error } = await fetcher(
+			`message?msgId=${props.ticket.msg_id}`
+		);
+		if (error) {
+			setTicketErrorMessage(`${error}, click to try again`);
+		}
+		if (data) {
+			setMessage(data);
+			setTicketErrorMessage(null);
+		}
+	};
+
+	const fetchConversation = async () => {
+		const { data, error } = await fetcher(
+			`messages?ticketId=${props.ticket.id}`
+		);
+		if (error) {
+			setContextMessageError("failed to get conversation");
+		}
+		if (data) {
+			setContextMessages(data);
+			setContextMessageError(null);
+		}
+	};
+
 	return (
 		<Grid item md={6} xs={12}>
 			<Box
 				height="100%"
-				onClick={handleDrawerOpen}
+				onClick={ticketErrorMessage ? fetchMessage : handleDrawerOpen}
 				className={styles.ticketContainer}
 				sx={{ bgcolor: toggleDrawer ? "#0A0A0A" : "#1c1c1f" }}
 			>
-				{message && (
-					<>
-						<Box sx={{ display: "flex" }}>
-							<Typography color={message.author.color}>
-								{message.author.name}
-							</Typography>
-							<Typography>: {message.content}</Typography>
-						</Box>
-						<TicketFooter
-							ticket={props.ticket}
-							message={message}
-							setTickets={props.setTickets}
-							handleSearchClick={props.handleSearchClick}
-							handleSearchMessageChange={props.handleSearchMessageChange}
-						/>
-					</>
+				{ticketErrorMessage ? (
+					<Alert severity="error">{ticketErrorMessage}</Alert>
+				) : (
+					message && (
+						<>
+							<Box sx={{ display: "flex" }}>
+								<Typography color={message.author.color}>
+									{message.author.name}
+								</Typography>
+								<Typography>: {message.content}</Typography>
+							</Box>
+							<TicketFooter
+								ticket={props.ticket}
+								message={message}
+								setTickets={props.setTickets}
+								handleSearchClick={props.handleSearchClick}
+								handleSearchMessageChange={props.handleSearchMessageChange}
+							/>
+						</>
+					)
 				)}
 				<Drawer
 					anchor="right"
@@ -73,23 +109,34 @@ const Ticket: React.FC<Props> = (props) => {
 					hideBackdrop
 				>
 					<Box className={styles.drawerContainer}>
-						{contextMessages
-							? contextMessages.map((message: MessageType) => (
-									<ContextMessage
-										key={message.id}
-										ticket={props.ticket}
-										message={message}
-										contextMessages={contextMessages}
-									/>
-							  ))
-							: [...Array(10)].map((_, i) => (
-									<Skeleton
-										variant="rectangular"
-										key={i}
-										height={60}
-										sx={{ mb: "16px" }}
-									/>
-							  ))}
+						{contextMessageError ? (
+							<Alert severity="error">
+								<AlertTitle>Error</AlertTitle>
+								{contextMessageError},{" "}
+								<strong>
+									<u onClick={() => fetchConversation()}>click me</u> to try
+									again.
+								</strong>
+							</Alert>
+						) : contextMessages ? (
+							contextMessages.map((message: MessageType) => (
+								<ContextMessage
+									key={message.id}
+									ticket={props.ticket}
+									message={message}
+									contextMessages={contextMessages}
+								/>
+							))
+						) : (
+							[...Array(10)].map((_, i) => (
+								<Skeleton
+									variant="rectangular"
+									key={i}
+									height={60}
+									sx={{ mb: "16px" }}
+								/>
+							))
+						)}
 					</Box>
 				</Drawer>
 			</Box>

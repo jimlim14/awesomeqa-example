@@ -1,19 +1,28 @@
-export default function fetcher(
+export default async function fetcher(
 	url: string,
 	data = undefined,
 	method: string | undefined = undefined
 ) {
-	return fetch(`http://localhost:5001/${url}`, {
-		method: method ? method : "GET",
-		credentials: "include",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data),
-	}).then((res) => {
-		if (res.status > 299 && res.status < 200) {
-			throw new Error();
+	try {
+		const res = await fetch(`http://localhost:5001/${url}`, {
+			method: method ? method : "GET",
+			credentials: "include",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		});
+		if (!res.ok) {
+			throw new Error("Request failed");
 		}
-		return res.json();
-	});
+		return {
+			data: await res.json(),
+			error: undefined,
+		};
+	} catch (e) {
+		return {
+			data: undefined,
+			error: e.message || "Something went wrong",
+		};
+	}
 }
