@@ -3,7 +3,7 @@ import uvicorn
 from fastapi import Depends, FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import ticket_router, message_router
+from app.routers import ticket_router, message_router, user_router
 
 app = FastAPI()
 
@@ -21,6 +21,7 @@ app.add_middleware(
 
 app.include_router(ticket_router.router, tags=["tickets"])
 app.include_router(message_router.router, tags=["messages"])
+app.include_router(user_router.router, tags=["users"])
 
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host="0.0.0.0", port=5001, reload=True)

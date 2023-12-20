@@ -43,3 +43,15 @@ class TicketRepository:
             if message["id"] in context_messages:
                 conversation.append(message)
         return conversation
+
+    def get_users(self) -> dict:
+        users = {}
+        messages = self.data["messages"]
+        for message in messages:
+            if message["author_id"] not in users:
+                users[message["author_id"]] = message["author"]
+        return users
+
+    def get_user(self, user_id: str) -> dict:
+        users = self.get_users()
+        return users[user_id]
