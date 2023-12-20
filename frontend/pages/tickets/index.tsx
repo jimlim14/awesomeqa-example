@@ -6,11 +6,11 @@ import {
 	Alert,
 	AlertTitle,
 } from "@mui/material";
-import { useEffect, useState, useRef } from "react";
-import { TicketType } from "../../types/types";
-import styles from "../../styles/Tickets.module.css";
-import Ticket from "../../components/Tickets";
-import fetcher from "../../lib/fetcher";
+import { useEffect, useState } from "react";
+import { TicketType } from "@/types/types";
+import styles from "@/styles/Tickets.module.css";
+import Ticket from "@/components/Tickets";
+import fetcher from "@/lib/fetcher";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 function Tickets() {

@@ -1,12 +1,12 @@
 import { Box, Typography, Tooltip, Alert, useTheme } from "@mui/material";
 import ticketFooterStyles from "./TicketFooter.module.css";
-import ticketsPageStyles from "../../../styles/Tickets.module.css";
+import ticketsPageStyles from "@/styles/Tickets.module.css";
 import SearchIcon from "@mui/icons-material/Search";
 import MessageIcon from "@mui/icons-material/Message";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
-import { formatDateDistance } from "../../../lib/formatDateDistance";
-import fetcher from "../../../lib/fetcher";
-import { TicketType, MessageType } from "../../../types/types";
+import { formatDateDistance } from "@/lib/formatDateDistance";
+import fetcher from "@/lib/fetcher";
+import { TicketType, MessageType } from "@/types/types";
 import { useState } from "react";
 
 type Props = {

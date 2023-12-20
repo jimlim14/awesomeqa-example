@@ -1,10 +1,10 @@
 import { Box, Typography, Tooltip, useTheme } from "@mui/material";
-import { MessageType, TicketType } from "../../../types/types";
+import { MessageType, TicketType } from "@/types/types";
 import TurnRightIcon from "@mui/icons-material/TurnRight";
 import LinkIcon from "@mui/icons-material/Link";
-import ticketsPageStyles from "../../../styles/Tickets.module.css";
+import ticketsPageStyles from "@/styles/Tickets.module.css";
 import contextMessageStyles from "./ContextMessage.module.css";
-import fetcher from "../../../lib/fetcher";
+import fetcher from "@/lib/fetcher";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
@@ -86,7 +86,7 @@ const ContextMessage: React.FC<Props> = (props) => {
 				console.error(
 					`Failed to fetch user data for userId ${userId}: ${error}`
 				);
-				replacedMessage = replacedMessage.replace(match[0], `@unknown_user`)
+				replacedMessage = replacedMessage.replace(match[0], `@unknown_user`);
 			}
 		}
 

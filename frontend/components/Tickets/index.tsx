@@ -6,10 +6,10 @@ import {
 	Alert,
 	AlertTitle,
 } from "@mui/material";
-import styles from "../../styles/Tickets.module.css";
-import { MessageType, TicketType } from "../../types/types";
+import styles from "@/styles/Tickets.module.css";
+import { MessageType, TicketType } from "@/types/types";
 import { useEffect, useState } from "react";
-import fetcher from "../../lib/fetcher";
+import fetcher from "@/lib/fetcher";
 import Drawer from "@mui/material/Drawer";
 import TicketFooter from "./TicketFooter";
 import ContextMessage from "./ContextMessage";
