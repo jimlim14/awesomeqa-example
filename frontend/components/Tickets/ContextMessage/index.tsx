@@ -7,6 +7,8 @@ import contextMessageStyles from "./ContextMessage.module.css";
 import fetcher from "@/lib/fetcher";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 type Props = {
 	ticket: TicketType;
@@ -153,6 +155,25 @@ const ContextMessage: React.FC<Props> = (props) => {
 					<ReactMarkdown
 						className={contextMessageStyles.reactMarkdown}
 						linkTarget="_blank"
+						components={{
+							code({ node, inline, className, children, ...rest }) {
+								const match = /language-(\w+)/.exec(className || "");
+								return !inline && match ? (
+									<div style={{ width: "752px" }}>
+										<SyntaxHighlighter
+											{...rest}
+											style={oneDark}
+											language={match[1]}
+											PreTag="div"
+										>
+											{children as string}
+										</SyntaxHighlighter>
+									</div>
+								) : (
+									<code {...props}>&apos;{children}&apos;</code>
+								);
+							},
+						}}
 					>
 						{content}
 					</ReactMarkdown>
