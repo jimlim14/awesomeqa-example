@@ -1,0 +1,7 @@
+.reactMarkdown > :first-child {
+	margin-top: 0 !important;
+}
+
+.reactMarkdown > :last-child {
+	margin-bottom: 0 !important;
+}

@@ -4,6 +4,9 @@ import TurnRightIcon from "@mui/icons-material/TurnRight";
 import LinkIcon from "@mui/icons-material/Link";
 import ticketsPageStyles from "../../../styles/Tickets.module.css";
 import contextMessageStyles from "./ContextMessage.module.css";
+import fetcher from "../../../lib/fetcher";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 type Props = {
 	ticket: TicketType;
@@ -13,6 +16,20 @@ type Props = {
 
 const ContextMessage: React.FC<Props> = (props) => {
 	const theme = useTheme();
+	const [content, setContent] = useState<string | null>(null);
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				const result = await getContent(props.message.content);
+				setContent(result);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+
+		fetchData();
+	}, []);
 
 	function getRepliedMessage(referenceId: string) {
 		const repliedMessage = props.contextMessages.find(
@@ -51,6 +68,29 @@ const ContextMessage: React.FC<Props> = (props) => {
 				</Box>
 			);
 		}
+	}
+
+	async function getContent(text: string): Promise<string> {
+		const tagRegex = /<@(\d+)>/g;
+		let replacedMessage = text;
+		let match: RegExpExecArray;
+
+		while ((match = tagRegex.exec(text)) !== null) {
+			const userId = match[1];
+			const { data, error } = await fetcher(`user?user_id=${userId}`);
+
+			if (!error) {
+				const username = `@${data.name}`;
+				replacedMessage = replacedMessage.replace(match[0], username);
+			} else {
+				console.error(
+					`Failed to fetch user data for userId ${userId}: ${error}`
+				);
+				replacedMessage = replacedMessage.replace(match[0], `@unknown_user`)
+			}
+		}
+
+		return replacedMessage;
 	}
 
 	return (
@@ -110,7 +150,12 @@ const ContextMessage: React.FC<Props> = (props) => {
 							</Tooltip>
 						)}
 					</Box>
-					<Typography variant="body1">{props.message.content}</Typography>
+					<ReactMarkdown
+						className={contextMessageStyles.reactMarkdown}
+						linkTarget="_blank"
+					>
+						{content}
+					</ReactMarkdown>
 				</Box>
 			</Box>
 		</Box>
